@@ -1,67 +1,24 @@
 import React from "react";
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  Legend,
-  Title,
-  Tooltip,
-  SubTitle,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-import "chartjs-adapter-moment";
 import moment from "moment";
+import { Line } from "react-chartjs-2";
+import { Chart, registerables } from 'chart.js';
 
-ChartJS.register(
-  LineElement,
-  PointElement,
-  LineController,
-  CategoryScale,
-  LinearScale,
-  Legend,
-  Title,
-  Tooltip,
-  SubTitle
-);
+function Grafico2({ dadosMortes }: any) {
+  
+  Chart.register(...registerables);
 
-function Grafico({ dadosMortes }: any) {
   const labels = dadosMortes
     .map((dado: any) => moment(new Date(dado.dia)).format("ll"))
     .reverse();
 
   const ordenada = dadosMortes.map((dado: any) => dado.mortes).reverse();
 
-  const options = {
-    scales: {
-      x: {
-        ticks: {
-          callback: function (val: any, index: any) {
-            return index % 30 === 0 ? labels[val] : "";
-          },
-        },
-        color: "black",
-      },
-    },
 
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: false,
-        text: "Mortes Acumuladas",
-      },
-    },
-  };
-  const data = {
-    labels,
+  const state = {
+    labels: labels,
     datasets: [
       {
-        label: "Mortes Acumuladas",
+        label: "Mortes acumuladas",
         data: ordenada,
         borderColor: "black",
         backgroundColor: "black",
@@ -71,11 +28,35 @@ function Grafico({ dadosMortes }: any) {
       },
     ],
   };
+
+  const options = {
+    scales: {
+      x: {
+        ticks: {
+          callback: function (val: any, index: any) {
+            return (index % 7 === 0 || index + 1 === labels.length) ? labels[val] : "";
+          },
+        },
+        color: "black",
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: "Mortes Acumuladas",
+      },
+    },
+  };
+
   return (
-    <>
-      <Line options={options} data={data} />;
-    </>
+    <div>
+      <Line data={state} options={options}></Line>
+    </div>
   );
 }
 
-export default Grafico;
+export default Grafico2;

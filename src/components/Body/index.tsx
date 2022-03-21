@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Input from "./Input";
 import Statistics from "./Statistics";
 import Chart from "./Chart";
+import './style.css'
 function Body() {
   const initial = [
     {
@@ -30,18 +31,23 @@ function Body() {
   const [dadosPais, setDadosPais] = useState(initial);
 
   return (
-    <>
-      <Input
-        paisSelecionado={paisSelecionado}
-        setPaisSelecionado={setPaisSelecionado}
-      />
-      <Statistics
-        dadosPais={dadosPais}
-        setDadosPais={setDadosPais}
-        paisSelecionado={paisSelecionado}
-      />
-      <Chart paisSelecionado={paisSelecionado}/>
-    </>
+    <div className="container">
+      <div className="row container-input-statistics">
+        <Input
+          paisSelecionado={paisSelecionado}
+          setPaisSelecionado={setPaisSelecionado}
+        />
+        <Statistics
+          dadosPais={dadosPais}
+          setDadosPais={setDadosPais}
+          paisSelecionado={paisSelecionado}
+        />
+      </div>
+      <div className="row">
+
+        <Chart paisSelecionado={paisSelecionado} />
+      </div>
+    </div>
   );
 }
 

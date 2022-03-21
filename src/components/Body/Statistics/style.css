@@ -1,0 +1,13 @@
+.img-flag {
+    width: 100px;
+    border: 1px solid;
+    border-radius: 1rem;
+    padding: 0;
+    margin: calc(var(--bs-gutter-x) * .5);
+
+}
+
+.alinhar-ps {
+    text-align: center;
+    align-self: center;
+}

@@ -26,3 +26,7 @@ console.log(typeof teste_)
 } */
 
 /* console.log(ola(teste_)) */
+
+function x() {
+  var resultado = 2
+}

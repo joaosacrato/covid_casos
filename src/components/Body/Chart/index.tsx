@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getHistory } from "../../../services/api/getHistory";
-import Grafico from "./Grafico";
+import Grafico from './Grafico'
+import './style.css'
+
 interface Props {
   paisSelecionado: string;
 }
@@ -70,11 +72,10 @@ function Chart({ paisSelecionado }: Props) {
     setDadosMorteGraph(ajustaDiaRepetido(aux, "dia"));
   }, [historico]);
 
-
   return (
-    <>
+    <div className="container-sm grafico">
       <Grafico dadosMortes={dadosMorteGraph} />
-    </>
+    </div>
   );
 }
 export default Chart;

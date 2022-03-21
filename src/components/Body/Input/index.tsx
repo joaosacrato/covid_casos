@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPaisesDisponiveis } from "../../../services/api/getPaisesDisponiveis";
+import './style.css'
 
 interface Props {
   paisSelecionado: string;
@@ -13,12 +14,11 @@ function Input({ paisSelecionado, setPaisSelecionado }: Props) {
     getPaisesDisponiveis(setPaisesDisponíveis);
   }, []);
   return (
-    <>
       <select
         onChange={(event) => {
           setPaisSelecionado(event.target.value);
         }}
-        className="form-select"
+        className="form-select col body-input"
         defaultValue={`initial`}
       >
         <option value="initial">Escolha um país</option>
@@ -28,7 +28,6 @@ function Input({ paisSelecionado, setPaisSelecionado }: Props) {
           </option>,
         ])}
       </select>
-    </>
   );
 }
 
