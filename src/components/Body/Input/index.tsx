@@ -18,8 +18,8 @@ function Input({ paisSelecionado, setPaisSelecionado }: Props) {
         onChange={(event) => {
           setPaisSelecionado(event.target.value);
         }}
-        className="form-select col body-input"
-        defaultValue={`initial`}
+        className="form-select col body-input bg-input"
+        defaultValue="initial"
       >
         <option value="initial">Escolha um país</option>
         {paisesDisponiveis.map((pais: any) => [

@@ -1,15 +1,13 @@
 import axios from "axios";
-import { options } from "./options";
 
-export const getFlag = (country, set) => {
+export const getFlagStatus = (country, setCountry) => {
   axios
     .request({
         method: "GET",
         url: `https://countryflagsapi.com/svg/${country}`})
     .then(function (response) {
-      if (response.status === 200) {
-        set(response.data.response);
-      }
+      console.log(response)
+      setCountry(response.status)
     })
     .catch(function (error) {
       console.error(error);

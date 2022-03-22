@@ -2,3 +2,7 @@
     height: fit-content;
     align-self: center;
 }
+
+.bg-input {
+    background-color: #F8F7F9;
+}

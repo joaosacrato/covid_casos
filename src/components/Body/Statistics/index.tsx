@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { getStatistics } from "../../../services/api/getStatistics";
 import "./style.css";
 import moment from "moment";
-import 'moment/locale/pt-br'
+import "moment/locale/pt-br";
 
 function porCemMil(casos: number, pop: number) {
   return (casos / pop) * 100000;
+}
+
+function tirarSinalMais(str: string) {
+  return parseInt(str.replace("+", ""));
 }
 
 interface Props {
@@ -59,119 +63,191 @@ interface Props {
 }
 
 function Statistics({ dadosPais, setDadosPais, paisSelecionado }: Props) {
-  moment.locale('pt-br')
+
+  const [flagStatus, setFlagStatus] = useState('400')
+
   useEffect(() => {
-    if (paisSelecionado !== "" && "initial") {
+    if (paisSelecionado !== "" && paisSelecionado !== "initial") {
       getStatistics(setDadosPais, paisSelecionado);
     }
-  }, [paisSelecionado]);
-  return (
-    <section className="col-lg-9">
-      <div className="container">
-        <div className="row container">
-          {dadosPais[0].country ? (
-            <img
-              className="img-flag align-middle"
-              src={`https://countryflagsapi.com/svg/${dadosPais[0].country}`}
-              alt={`${dadosPais[0].country}`}
-            />
-          ) : (
-            "Não foi possível obter o pais, atualize o campo país"
-          )}
+  }, [paisSelecionado, setDadosPais]);
 
-          <p className="col alinhar-ps">{`População: ${
-            dadosPais[0].population
-              ? dadosPais[0].population.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-          <p className="col alinhar-ps">{`Ultima atualização: ${
-            dadosPais[0].time
-              ? moment(dadosPais[0].time).startOf('day').fromNow()
-              : "O dado não é disponibilizado"
-          }`}</p>
+
+  return (
+    <section className="col-lg-10">
+      <div className="container">
+        <div className="row div-alinhamento">
+          <div className="col">
+            {dadosPais[0].country ? (
+              <img
+                className="img-flag align-middle"
+                src={`https://countryflagsapi.com/svg/${dadosPais[0].country.replaceAll('-',' ')}`}
+                alt={dadosPais[0].country}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+
+          <div className="col">
+            <span className="span-titulo-p display-6">População</span>
+            {dadosPais[0].population ? (
+              <span className="span-dado">
+                {dadosPais[0].population.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
+
+          <div className="col">
+            <span className="span-titulo-p display-6">Última atualização</span>
+            {dadosPais[0].time ? (
+              <span className="span-dado">
+                {moment(dadosPais[0].time).startOf("day").fromNow()}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
         </div>
 
-        <div className="row container">
-          <p className="col alinhar-ps">{`Casos totais: ${
-            dadosPais[0].cases.total
-              ? dadosPais[0].cases.total.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
+        <div className="row div-alinhamento">
+          <hr />
+          <p className="display-6 titulo-row">Números acumulados</p>
+          <div className="col">
+            <span className="span-titulo-p display-6">Casos</span>
+            {dadosPais[0].cases.total ? (
+              <span className="span-dado">
+                {dadosPais[0].cases.total.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
 
-          <p className="col alinhar-ps">{`Número de casos a cada 100.000 habitantes: ${
-            dadosPais[0].population && dadosPais[0].cases.total
-              ? parseInt(
+          <div className="col">
+            <span className="span-titulo-p display-6">Mortes</span>
+            {dadosPais[0].deaths.total ? (
+              <span className="span-dado">
+                {dadosPais[0].deaths.total.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
+
+          <div className="col">
+            <span className="span-titulo-p display-6">Testes</span>
+            {dadosPais[0].tests.total ? (
+              <span className="span-dado">
+                {dadosPais[0].tests.total.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
+        </div>
+
+        <div className="row div-alinhamento">
+          <hr />
+          <p className="display-6 titulo-row">
+            Números acumulados por 100.000 habitantes
+          </p>
+
+          <div className="col">
+            <span className="span-titulo-p display-6">Casos</span>
+            {dadosPais[0].population && dadosPais[0].cases.total ? (
+              <span className="span-dado">
+                {parseInt(
                   porCemMil(
                     dadosPais[0].cases.total,
                     dadosPais[0].population
                   ).toFixed(0)
-                ).toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-
-          <p className="col alinhar-ps">{`Novos casos: ${
-            dadosPais[0].cases.new
-              ? dadosPais[0].cases.new
-              : "O dado não é disponibilizado"
-          }`}</p>
-
-          <p className="col alinhar-ps">{`Número de casos ativos: ${
-            dadosPais[0].cases.active
-              ? dadosPais[0].cases.active.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-          <p className="col alinhar-ps">{`Número de casos criticos: ${
-            dadosPais[0].cases.critical
-              ? dadosPais[0].cases.critical.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-        </div>
-
-        <div className="row container">
-              <p className="col alinhar-ps">{`Mortes acumuladas: ${
-                dadosPais[0].deaths.total
-                  ? dadosPais[0].deaths.total.toLocaleString("pt-BR")
-                  : "O dado não é disponibilizado"
-              }`}</p>
-          <p className="col alinhar-ps">{`Novas mortes: ${
-            dadosPais[0].deaths.new
-              ? dadosPais[0].deaths.new
-              : "O dado não é disponibilizado"
-          }`}</p>
-          <p className="col alinhar-ps">{`Número de mortes a cada 100.000 habitantes: ${
-            dadosPais[0].deaths.total && dadosPais[0].population
-              ? parseInt(
+                ).toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponivel</span>
+            )}
+          </div>
+          <div className="col">
+            <span className="span-titulo-p display-6">Mortes</span>
+            {dadosPais[0].deaths.total && dadosPais[0].population ? (
+              <span className="span-dado">
+                {parseInt(
                   porCemMil(
                     dadosPais[0].deaths.total,
                     dadosPais[0].population
                   ).toFixed(0)
-                ).toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-        </div>
-        <div className="row container">
-          <p className="col alinhar-ps">{`Testes totais: ${
-            dadosPais[0].tests.total
-              ? dadosPais[0].tests.total.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
-
-          <p className="col alinhar-ps">{`Número de testes a cada 100.000 habitantes: ${
-            dadosPais[0].tests.total && dadosPais[0].population
-              ? parseInt(
+                ).toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Dado não disponível</span>
+            )}
+          </div>
+          <div className="col">
+            <span className="span-titulo-p display-6">Testes</span>
+            {dadosPais[0].tests.total && dadosPais[0].population ? (
+              <span className="span-dado">
+                {parseInt(
                   porCemMil(
                     dadosPais[0].tests.total,
                     dadosPais[0].population
                   ).toFixed(0)
-                ).toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
+                ).toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Dado não disponível</span>
+            )}
+          </div>
+        </div>
 
-          <p className="col alinhar-ps">{`Total de recuperados: ${
-            dadosPais[0].cases.recovered
-              ? dadosPais[0].cases.recovered.toLocaleString("pt-BR")
-              : "O dado não é disponibilizado"
-          }`}</p>
+        <div className="row div-alinhamento">
+          <hr />
+          <div className="col">
+            <span className="span-titulo-p display-6">Novos Casos</span>
+            {dadosPais[0].cases.new ? (
+              <span className="span-dado">
+                +
+                {tirarSinalMais(dadosPais[0].cases.new).toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponível</span>
+            )}
+          </div>
+          <div className="col">
+            <span className="span-titulo-p display-6">Novas mortes</span>
+            {dadosPais[0].deaths.new ? (
+              <span className="span-dado">
+                +
+                {tirarSinalMais(dadosPais[0].deaths.new).toLocaleString(
+                  "pt-BR"
+                )}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponível</span>
+            )}
+          </div>
+          <div className="col">
+            <span className="span-titulo-p display-6">Casos Ativos</span>
+            {dadosPais[0].cases.active ? (
+              <span className="span-dado">
+                {dadosPais[0].cases.active.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponível</span>
+            )}
+          </div>
+          <div className="col">
+            <span className="span-titulo-p display-6">Recuperados</span>
+            {dadosPais[0].cases.recovered ? (
+              <span className="span-dado">
+                {dadosPais[0].cases.recovered.toLocaleString("pt-BR")}
+              </span>
+            ) : (
+              <span className="span-dado">Não disponível</span>
+            )}
+          </div>
         </div>
       </div>
     </section>
