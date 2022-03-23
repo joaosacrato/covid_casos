@@ -30,6 +30,13 @@ function Body() {
   const [paisSelecionado, setPaisSelecionado] = useState("");
   const [dadosPais, setDadosPais] = useState(initial);
 
+  useEffect(() => {
+    console.log(dadosPais[0]);
+    if (!dadosPais[0]) {
+      console.log("retornou");
+    }
+  }, [dadosPais]);
+
   return (
     <div className="container bg-color-p">
       <div className="row container-input-statistics">
@@ -39,21 +46,20 @@ function Body() {
         />
         {paisSelecionado !== initial[0].country ? (
           <Statistics
-            dadosPais={dadosPais}
+            dadosPais={dadosPais[0] ? dadosPais : initial}
             setDadosPais={setDadosPais}
             paisSelecionado={paisSelecionado}
           />
         ) : (
           <></>
         )}
-       
       </div>
       <div className="row">
-        {
-          paisSelecionado!==initial[0].country ? 
-          <Chart paisSelecionado={paisSelecionado} /> : <></>
-
-        }
+        {paisSelecionado !== initial[0].country ? (
+          <Chart paisSelecionado={paisSelecionado} />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

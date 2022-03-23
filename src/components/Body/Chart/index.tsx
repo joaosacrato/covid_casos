@@ -65,6 +65,8 @@ function Chart({ paisSelecionado }: Props) {
 
   useEffect(() => {
     getHistory(setHistorico, paisSelecionado);
+    return () => {
+    }
   }, [paisSelecionado]);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ function Chart({ paisSelecionado }: Props) {
   }, [historico]);
 
   return (
-    <div className="container-sm grafico">
+    <div className="container-fluid grafico">
       <Grafico dadosMortes={dadosMorteGraph} />
     </div>
   );

@@ -14,6 +14,15 @@ function Grafico2({ dadosMortes }: any) {
   const ordenada = dadosMortes.map((dado: any) => dado.mortes).reverse();
 
 
+  function ajustarTela() {
+    if (window.innerWidth > 992) {
+      return 1.8
+    } else {
+      return 1.2
+    }
+  }
+
+
   const state = {
     labels: labels,
     datasets: [
@@ -41,6 +50,7 @@ function Grafico2({ dadosMortes }: any) {
       },
     },
     responsive: true,
+    aspectRatio: ajustarTela(),
     plugins: {
       legend: {
         display: false,
@@ -53,9 +63,9 @@ function Grafico2({ dadosMortes }: any) {
   };
 
   return (
-    <div>
+    <>
       <Line data={state} options={options}></Line>
-    </div>
+    </>
   );
 }
 

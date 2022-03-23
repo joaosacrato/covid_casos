@@ -1,32 +1,16 @@
-function groupArrayOfObjects(list, key) {
-  return list.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
+const arrayTeste = [1,2,3,4,5]
+
+function tset(nr) {
+  let op = 'funciona'
+  if (arrayTeste.includes(nr)) {
+    console.log(op)
+    var oi = arrayTeste.indexOf(nr)
+  }
+  console.log(oi)
 }
 
-const teste = [
-  { mortes: 2000, dia: "02-02-2022" },
-  { mortes: 2022, dia: "02-02-2022" },
-  { mortes: 2022, dia: "02-02-2022" },
-  { mortes: 2044, dia: "02-03-2022" },
-  { mortes: 2050, dia: "02-03-2022" },
-  { mortes: 2066, dia: "02-04-2022" },
-  { mortes: 2070, dia: "02-04-2022" },
-];
+
+tset(4)
 
 
-const teste_ = groupArrayOfObjects(teste, "dia")
-
-console.log(typeof teste_)
-
-
-/* function ola(teste) {
-    teste.forEach(d => console.log(d))
-} */
-
-/* console.log(ola(teste_)) */
-
-function x() {
-  var resultado = 2
-}
+console.log(oi)
