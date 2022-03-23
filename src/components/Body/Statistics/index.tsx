@@ -93,7 +93,6 @@ function Statistics({ dadosPais, setDadosPais, paisSelecionado }: Props) {
     }
   }, [paisSelecionado, setDadosPais]);
 
-  console.log(Boolean(dadosPais[1]));
 
   return (
     <section className="col-lg-10">

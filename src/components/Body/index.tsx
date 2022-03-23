@@ -30,13 +30,6 @@ function Body() {
   const [paisSelecionado, setPaisSelecionado] = useState("");
   const [dadosPais, setDadosPais] = useState(initial);
 
-  useEffect(() => {
-    console.log(dadosPais[0]);
-    if (!dadosPais[0]) {
-      console.log("retornou");
-    }
-  }, [dadosPais]);
-
   return (
     <div className="container bg-color-p">
       <div className="row container-input-statistics">
